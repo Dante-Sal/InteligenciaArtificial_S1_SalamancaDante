@@ -1,3 +1,5 @@
+//command examples at the bottom...
+
 const fs = require('fs');
 const readline = require('readline');
 const { encoding_for_model } = require('tiktoken');
@@ -85,3 +87,29 @@ estimated cost (input only): $${cost} USD`);
 };
 
 summarize();
+
+//command examples:
+
+  //direct execution:
+
+    //manual:
+
+    //node file_calc.js -- --file ./One_Hundred_Years_of_Solitude_djvu.txt --ppm 30
+    //node file_calc.js -- --file ./One_Hundred_Years_of_Solitude_djvu.txt --model o3 --chksz 3000 --overlap 50 --ppm 2
+
+    //auto:
+
+    //nodemon file_calc.js -- --file ./One_Hundred_Years_of_Solitude_djvu.txt --ppm 30
+    //nodemon file_calc.js -- --file ./One_Hundred_Years_of_Solitude_djvu.txt --model o3 --chksz 3000 --overlap 50 --ppm 2
+
+  //execution by scripts:
+
+    //manual:
+
+    //npm run start_file_calc -- --file ./One_Hundred_Years_of_Solitude_djvu.txt --ppm 30
+    //npm run start_file_calc -- --file ./One_Hundred_Years_of_Solitude_djvu.txt --model o3 --chksz 3000 --overlap 50 --ppm 2
+
+    //auto:
+
+    //npm run test_file_calc -- --file ./One_Hundred_Years_of_Solitude_djvu.txt --ppm 30
+    //npm run test_file_calc -- --file ./One_Hundred_Years_of_Solitude_djvu.txt --model o3 --chksz 3000 --overlap 50 --ppm 2
