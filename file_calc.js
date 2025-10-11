@@ -16,11 +16,11 @@ function getArgument(name, abbreviation) {
     return undefined;
 };
 
-function summarize() {
+async function summarize() {
     const filePath = getArgument('file', 'f');
     const model = getArgument('model', 'm') || 'gpt-4';
     const chunkSize = Number(getArgument('chksz', 'c') || 2000);
-    const overlap = Number(getArgument('overlap', 'o') || 0);
+    let overlap = Number(getArgument('overlap', 'o') || 0);
     const pricePerMillion = Number(getArgument('ppm', 'p'));
 
     if (!filePath) {
@@ -28,7 +28,7 @@ function summarize() {
         process.exit(1);
     };
 
-    if (!pricePerMillion) {
+    if (!Number.isFinite(pricePerMillion)) {
         console.error('error: missing argument \'ppm\' (price per million tokens)');
         process.exit(1);
     };
@@ -44,7 +44,7 @@ function summarize() {
         crlfDelay: Infinity
     });
 
-    for (const line of txt) {
+    for await (const line of txt) {
         textAccumulator += (textAccumulator ? '\n' : '') + line;
 
         while (true) {
@@ -56,7 +56,7 @@ function summarize() {
             totalTokens += chunkTokens.length;
 
             overlap = Math.min(overlap, chunkSize);
-            const overlapTokens = overlap > 0 ? tokens.slice(chunkSize - overlap) : [];
+            const overlapTokens = overlap > 0 ? chunkTokens.slice(chunkSize - overlap) : [];
             const leftoverTokens = tokens.slice(chunkSize);
 
             textAccumulator = (overlapTokens.length ? encoding.decode(overlapTokens) : '') + encoding.decode(leftoverTokens);

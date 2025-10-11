@@ -4,10 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test text calc": "nodemon text_calc.js",
-    "start text calc": "node text_calc.js",
-    "test file calc": "nodemon file_calc.js",
-    "start file calc": "node file_calc.js"
+    "test_text_calc": "nodemon text_calc.js",
+    "start_text_calc": "node text_calc.js",
+    "test_file_calc": "nodemon file_calc.js",
+    "start_file_calc": "node file_calc.js"
   },
   "keywords": [],
   "author": "",

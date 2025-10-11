@@ -2,7 +2,6 @@ const { encoding_for_model } = require('tiktoken');
 
 async function countTokens() {
     const encoding = encoding_for_model('gpt-4');
-    console.log(encoding);
 
     const text = 'Hola ¿cómo estás? Espero que muy bien.';
     const generatedTokens = encoding.encode(text);
