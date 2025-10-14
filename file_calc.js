@@ -113,3 +113,9 @@ summarize();
 
     //npm run test_file_calc -- --file ./One_Hundred_Years_of_Solitude_djvu.txt --ppm 30
     //npm run test_file_calc -- --file ./One_Hundred_Years_of_Solitude_djvu.txt --model o3 --chksz 3000 --overlap 50 --ppm 2
+
+// --file / -f : path of the file to be entered into the calculator
+// --model / -m : AI model to be selected
+// --chksz / -c : number of tokens in each "block"
+// --overlap / -o : number of tokens from the previous "block" that will be repeated in the next one
+// --ppm / -p : price per million tokens (in dollars)
