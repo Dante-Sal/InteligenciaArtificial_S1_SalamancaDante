@@ -1,0 +1,192 @@
+description: 'Guía: tipos de datos compuestos'
+
+env:
+  GEMINI_API_KEY: AIzaSyBfbK-MVYvXVswmUIb8nVf0qUkqU5ric5o
+prompts:
+  - |
+    Soy un camper que se encuentra iniciando mi formación en {{lenguaje}} (más específicamente, iniciando la etapa de aprendizaje de tipos de datos compuestos en el lenguaje), en el bootcamp de Campuslands, siguiendo la ruta {{ruta}}. En mi proceso de aprendizaje he aplicado el uso de la versión {{version}} de {{lenguaje}}. Si bien he logrado comprender con precisión lo que es una lista a rasgos generales, no he llegado a descifrar cuándo o cómo usar los distintos tipos de datos compuestos ({{tipos_requeridos}} y en caso de alguno de estos tener variantes no incluirlas, solo hacer referencia al formato más primigenio de cada tipo) o cuáles son las diferencias clave que los segregan. Actúa como un instructor profesional para permitirme entender cuál es el papel que desempeña cada tipo de dato compuesto en un algoritmo, siendo capaz de diferenciarlos en un entorno real y determinar el uso correcto de cada uno, dependiendo el contexto que se esté trabajando. Retorna una respuesta en {{idioma}} ({{zona}}) neutro, sin regionalismos/coloquialismos, con un tono didáctico, directo, docente formal, similar a un manual o guía de clase, que contenga una primera definición sin tecnicismos (importante para dejar en claro las ideas), y unas explicaciones más especializadas al finalizar para formalizar el tema. No uses librerías externas para llevar a cabo la explicación; aplica ejemplos sencillos que puedan ser asociados con situaciones o aplicaciones de la vida cotidiana; excluye jerga, humor, vocativos, onomatopeyas, emojis, cualquier pictograma Unicode o estilo :smile:, preguntas retóricas, referencias a diccionarios (no deseo conocer nada acerca de estos tipos de datos ya que no es el tema que estoy trabajando en este momento, eso lo abarcaré después); mantén un registro profesional, neutral, claro y respetuoso; maneja segunda persona; si una sección pide sin tecnicismos usa un tono simple pero profesional, no coloquial.
+
+    Entrega el contenido de un archivo en formato {{formato}} con los siguientes componentes para desarrollar una respuesta adecuada a mi solicitud: resumen sin tecnicismos (compuesto de máximo {{max_resumen}} palabras; básicamente un párrafo que describa a grandes rasgos las diferencias más significativas de cada tipo de dato), tabla comparativa (debe incluir lado a lado las diferencias y similitudes entre los tipos de dato en columnas que indiquen mutabilidad, orden, posibilidad de duplicidad de los datos, acceso por índice y notas extras), listado con casos de uso (compuesto de mínimo {{num_casos}} bullets por cada tipo de dato con casos de uso teóricos sin implementar líneas de código para representarlos, es decir, a través de una explicación meramente teórica), ejemplos en código para dummies (crea sencillos ejemplos, exactamente uno por cada tipo de dato, con entre {{min_lineas_codigo}}-{{max_lineas_codigo}} líneas de código en formato ```{{formato_codigo}}, evitando usar métodos propios del tipo de dato dado el carácter introductorio de la explicación), descripción técnica (su objetivo es formalizar lo previamente aclarado en el "resumen sin tecnicismos"; en este apartado se deberá hacer uso de definiciones técnicas para dejar en claro las diferencias técnicas entre los tipos de datos).
+
+    En el apartado de ejemplos en código, teniendo en cuenta que las líneas de código funcional son aquellas que no comiencen con {{prefijo_comentario}} y las líneas de comentario explicativo las que sí inician con esta cadena de caracteres, garantiza que se cumpla que nunca puede haber dos líneas consecutivas de código funcional sin que exista al menos una línea de comentario en medio (siendo que las líneas en blanco no cuentan como comentario); que toda línea de código funcional debe estar precedida por una o más líneas de comentario que la expliquen; que si una línea de código está pensada para producir error no debe ser comentada, pero sí debe mantener su comentario previo explicando el fallo; manteniendo siempre exactamente {{min_lineas_codigo}}-{{max_lineas_codigo}} líneas de código funcional por bloque (sin contar a los comentarios dentro de ese rango) y considerando que estas reglas aplican para cualquier instrucción escrita en lenguaje {{lenguaje}}.
+
+    Sigue la plantilla que viene a continuación para construir cada bloque:
+
+    ```{{formato_codigo}}
+    {{prefijo_comentario}} Primer comentario: realiza la explicación de qué hace la línea 1 de código funcional
+    <Línea 1 de código funcional>
+
+    {{prefijo_comentario}} Segundo comentario: realiza la explicación de qué hace la línea 2 de código funcional
+    <Línea 2 de código funcional>
+
+    {{prefijo_comentario}} Tercer comentario: realiza la explicación de qué hace la línea 3 de código funcional
+    <Línea 3 de código funcional>
+    ```
+
+    El que viene a continuación sería un ejemplo incorrecto que no estás autorizado de generar:
+
+    ```{{formato_codigo}}
+    {{prefijo_comentario}} Primer comentario: realiza la explicación de qué hace la línea 1 de código funcional
+    <Línea 1 de código funcional>
+    <Línea 2 de código funcional sin comentar ni explicar>
+
+    {{prefijo_comentario}} Tercer comentario: realiza la explicación de qué hace la línea 3 de código funcional
+    <Línea 3 de código funcional>
+    ```
+
+    Antes de entregar revisa y elimina cualquier jerga o emoji, además de asegurarte de que no hagas mención de ningún tipo de dato compuesto no perteneciente al grupo solicitado, inclusive en la descripción técnica, la explicación debe estar únicamente enfocada en los tipos de datos requeridos. Revisa cada bloque de código: si detectas dos líneas seguidas de código funcional sin comentario intermedio, reescribe el bloque hasta cumplir las reglas. Verifica que el conteo de líneas de código funcional esté dentro de {{min_lineas_codigo}}–{{max_lineas_codigo}}.'
+
+providers:
+  - id: google:gemini-2.5-pro
+    config:
+      temperature: 0.2
+      maxOutputTokens: 8192
+      timeoutMs: 180000
+
+tests:
+  - vars:
+      lenguaje: 'Python'
+      ruta: 'Node.js'
+      version: '3.14.0'
+      tipos_requeridos: 'listas, tuplas, conjuntos'
+      idioma: 'español'
+      zona: 'Colombia'
+      formato: 'Markdown'
+      max_resumen: 60
+      num_casos: 5
+      min_lineas_codigo: 3
+      max_lineas_codigo: 5
+      formato_codigo: 'python'
+      prefijo_comentario: '#'
+    assert:
+      - type: icontains
+        value: 'lista'
+      - type: icontains
+        value: 'tupla'
+      - type: icontains
+        value: 'conjunto'
+      - type: regex
+        value: '\r?\n#{1,6}\s+[A-ZÁÉÍÓÚÑ][a-zA-ZáéíóúüÁÉÍÓÚÜÑñ0-9 :()-]{5,}'
+      - type: regex
+        value: '(?:\|(?:[^|\r\n]+\|){6}\s*\r?\n\s*\|(?:\s*:?\-+:?\s*\|){6}\s*\r?\n\s*(?:\|(?:[^|\r\n]+\|){6}\s*\r?\n\s*){2}\|(?:[^|\r\n]+\|){6}(?:\s*\r?\n\s*)?)|(?:\|(?:[^|\r\n]+\|){4}\s*\r?\n\s*\|(?:\s*:?\-+:?\s*\|){4}\s*\r?\n\s*(?:\|(?:[^|\r\n]+\|){4}\s*\r?\n\s*){4}\|(?:[^|\r\n]+\|){4}(?:\s*\r?\n\s*)?)'
+      - type: regex
+        value: '[mM]utabilidad'
+      - type: regex
+        value: '[oO]rden(amiento)?'
+      - type: regex
+        value: '[dD]uplic(?:idad|ados)'
+      - type: regex
+        value: '[aA]cceso'
+      - type: regex
+        value: '[íÍ]ndices?'
+      - type: regex
+        value: '[nN]otas?'
+      - type: not-regex
+        value: '\b[dD]iccionarios?\b'
+      - type: not-icontains
+        value: 'no puedo'
+      - type: javascript
+        value: |
+          const examples = (output.match(/```python(?:(?:\s*#[^\r\n]+){1,}\r?\n[\r\n\s]*[^#][^\r\n]+\r?\n[\r\n\s]*){2,4}(?:\s*#[^\r\n]+){1,}\r?\n[\r\n\s]*[^#][^\r\n]+(?:\r?\n[\r\n\s]*)?(?:\s*#[^\r\n]+)*(?:\r?\n[\r\n\s]*)?```/g)||[]).length;
+          const bullets = (output.match(/^\s*[-*]\s+.+/mg)||[]).length;
+          return examples === 3 && bullets >= 15;
+
+  - vars:
+      lenguaje: 'JavaScript'
+      ruta: 'Node.js'
+      version: 'ES6'
+      tipos_requeridos: 'arreglos, conjuntos'
+      idioma: 'español'
+      zona: 'Argentina'
+      formato: 'Markdown'
+      max_resumen: 80
+      num_casos: 3
+      min_lineas_codigo: 2
+      max_lineas_codigo: 5
+      formato_codigo: 'javascript'
+      prefijo_comentario: '//'
+    assert:
+      - type: icontains
+        value: 'arreglo'
+      - type: icontains
+        value: 'conjunto'
+      - type: regex
+        value: '\r?\n#{1,6}\s+[A-ZÁÉÍÓÚÑ][a-zA-ZáéíóúüÁÉÍÓÚÜÑñ0-9 :()-]{5,}'
+      - type: regex
+        value: '(?:\|(?:[^|\r\n]+\|){6}\s*\r?\n\s*\|(?:\s*:?\-+:?\s*\|){6}\s*\r?\n\s*\|(?:[^|\r\n]+\|){6}\s*\r?\n\s*\|(?:[^|\r\n]+\|){6}(?:\s*\r?\n\s*)?)|(?:\|(?:[^|\r\n]+\|){3}\s*\r?\n\s*\|(?:\s*:?\-+:?\s*\|){3}\s*\r?\n\s*(?:\|(?:[^|\r\n]+\|){3}\s*\r?\n\s*){4}\|(?:[^|\r\n]+\|){3}(?:\s*\r?\n\s*)?)'
+      - type: regex
+        value: '[mM]utabilidad'
+      - type: regex
+        value: '[oO]rden(amiento)?'
+      - type: regex
+        value: '[dD]uplic(?:idad|ados)'
+      - type: regex
+        value: '[aA]cceso'
+      - type: regex
+        value: '[íÍ]ndices?'
+      - type: regex
+        value: '[nN]otas?'
+      - type: not-regex
+        value: '\b(?:[oO]bject|[dD]ate|[mM]ap|[pP]rom(?:esa|ise))s?\b'
+      - type: not-icontains
+        value: 'no puedo'
+      - type: javascript
+        value: |
+          const examples = (output.match(/```(?:js|javascript)(?:(?:\s*\/\/[^\r\n]+){1,}\r?\n[\r\n\s]*[^\/][^\r\n]+\r?\n[\r\n\s]*){1,4}(?:\s*\/\/[^\r\n]+){1,}\r?\n[\r\n\s]*[^\/][^\r\n]+(?:\r?\n[\r\n\s]*)?(?:\s*\/\/[^\r\n]+)*(?:\r?\n[\r\n\s]*)?```/g)||[]).length;
+          const bullets = (output.match(/^\s*[-*]\s+.+/mg)||[]).length;
+          return examples === 2 && bullets >= 6;
+
+  - vars:
+      lenguaje: 'Java'
+      ruta: 'Java'
+      version: '17'
+      tipos_requeridos: 'arreglos, listas, conjuntos, colas, colas de doble extremo, conjuntos ordenados, colecciones secuenciadas'
+      idioma: 'inglés'
+      zona: 'Estados Unidos, California'
+      formato: 'Markdown'
+      max_resumen: 50
+      num_casos: 10
+      min_lineas_codigo: 5
+      max_lineas_codigo: 10
+      formato_codigo: 'java'
+      prefijo_comentario: '//'
+    assert:
+      - type: regex
+        value: '[aA]rrays?'
+      - type: regex
+        value: '[lL]ists?'
+      - type: regex
+        value: '[sS]ets?'
+      - type: regex
+        value: '[qQ]ueues?'
+      - type: regex
+        value: '[dD]eques?'
+      - type: regex
+        value: '[sS]orted ?[sS]ets?'
+      - type: regex
+        value: '[sS]equenced ?[cC]ollections?'
+      - type: regex
+        value: '\r?\n#{1,6}\s+[A-Z][a-zA-Z0-9 :()-]{5,}'
+      - type: regex
+        value: '(?:\|(?:[^|\r\n]+\|){6}\s*\r?\n\s*\|(?:\s*:?\-+:?\s*\|){6}\s*\r?\n\s*(?:\|(?:[^|\r\n]+\|){6}\s*\r?\n\s*){6}\|(?:[^|\r\n]+\|){6}(?:\s*\r?\n\s*)?)|(?:\|(?:[^|\r\n]+\|){8}\s*\r?\n\s*\|(?:\s*:?\-+:?\s*\|){8}\s*\r?\n\s*(?:\|(?:[^|\r\n]+\|){8}\s*\r?\n\s*){4}\|(?:[^|\r\n]+\|){8}(?:\s*\r?\n\s*)?)'
+      - type: regex
+        value: '[mM]utability'
+      - type: regex
+        value: '[oO]rder(ing)?'
+      - type: regex
+        value: '[dD]uplic(?:ity|ates)'
+      - type: regex
+        value: '[aA]ccess'
+      - type: regex
+        value: '[iI]ndex(?:es)?'
+      - type: regex
+        value: '[nN]otes?'
+      - type: not-regex
+        value: '\b(?:[rR]ecord|Map|[pP]romise|[rR]eg[eE]xp)s?\b'
+      - type: not-icontains
+        value: "i can't"
+      - type: javascript
+        value: |
+          const examples = (output.match(/```java(?:(?:\s*\/\/[^\r\n]+){1,}\r?\n[\r\n\s]*[^\/][^\r\n]+\r?\n[\r\n\s]*){4,9}(?:\s*\/\/[^\r\n]+){1,}\r?\n[\r\n\s]*[^\/][^\r\n]+(?:\r?\n[\r\n\s]*)?(?:\s*\/\/[^\r\n]+)*(?:\r?\n[\r\n\s]*)?```/g)||[]).length;
+          const bullets = (output.match(/^\s*[-*]\s+.+/mg)||[]).length;
+          return examples === 7 && bullets >= 70;
