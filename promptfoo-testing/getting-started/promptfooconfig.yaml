@@ -10,6 +10,7 @@ prompts:
 
     En el apartado de ejemplos en código, teniendo en cuenta que las líneas de código funcional son aquellas que no comiencen con {{prefijo_comentario}} y las líneas de comentario explicativo las que sí inician con esta cadena de caracteres, garantiza que se cumpla que nunca puede haber dos líneas consecutivas de código funcional sin que exista al menos una línea de comentario en medio (siendo que las líneas en blanco no cuentan como comentario); que toda línea de código funcional debe estar precedida por una o más líneas de comentario que la expliquen; que si una línea de código está pensada para producir error no debe ser comentada, pero sí debe mantener su comentario previo explicando el fallo; que se entreguen únicamente sentencias sueltas de {{lenguaje}} en líneas independientes; manteniendo siempre exactamente {{min_lineas_codigo}}-{{max_lineas_codigo}} líneas de código funcional por bloque (sin contar a los comentarios dentro de ese rango) y considerando que estas reglas aplican para cualquier instrucción escrita en lenguaje {{lenguaje}}.
 
+    
     Sigue la plantilla que viene a continuación para construir cada bloque:
 
     ```{{formato_codigo}}
@@ -34,7 +35,7 @@ prompts:
     <Línea 3 de código funcional>
     ```
 
-    Antes de entregar revisa y elimina cualquier jerga o emoji, además de asegurarte de que no hagas mención de ningún tipo de dato compuesto no perteneciente al grupo solicitado, inclusive en la descripción técnica, la explicación debe estar únicamente enfocada en los tipos de datos requeridos. Revisa cada bloque de código: si detectas dos líneas seguidas de código funcional sin comentario intermedio, reescribe el bloque hasta cumplir las reglas. Verifica que el conteo de líneas de código funcional esté dentro de {{min_lineas_codigo}}–{{max_lineas_codigo}}.'
+    Antes de entregar revisa y elimina cualquier jerga o emoji, además de asegurarte de que no hagas mención de ningún tipo de dato compuesto no perteneciente al grupo solicitado, inclusive en la descripción técnica, la explicación debe estar únicamente enfocada en los tipos de datos requeridos. Garantiza que la tabla comparativa contenga las palabras clave mutabilidad, orden u ordenamiento, duplicidad o duplicados, acceso por índices y notas. Revisa cada bloque de código: si detectas dos líneas seguidas de código funcional sin comentario intermedio, reescribe el bloque hasta cumplir las reglas. Verifica que el conteo de líneas de código funcional esté dentro de {{min_lineas_codigo}}–{{max_lineas_codigo}}.'
 
 providers:
   - id: google:gemini-2.5-pro
